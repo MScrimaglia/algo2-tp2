@@ -50,6 +50,14 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         return this.longitud;
     }
 
+    public T primero() {
+        return this.primero.valor;
+    }
+
+    public T ultimo() {
+        return this.ultimo.valor;
+    }
+
     public void agregar(T elem) {
        
         Nodo nuevoNodo = new Nodo(elem);

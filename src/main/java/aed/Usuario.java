@@ -1,6 +1,6 @@
 package aed;
 
-public class Usuario {
+public class Usuario implements Comparable<Usuario>{
 
     private int id;           // ID del usuario
     private int saldo;        // monto del usuario
@@ -11,7 +11,7 @@ public class Usuario {
         this.saldo = 0;
     }
 
-    public int getIt() {
+    public int getId() {
         return id;
     }
 
@@ -21,5 +21,10 @@ public class Usuario {
 
     public void setSaldo(int saldo) {
         this.saldo = saldo;
+    }
+
+    @Override
+    public int compareTo(Usuario otro) {
+        return this.saldo - otro.saldo;
     }
 }

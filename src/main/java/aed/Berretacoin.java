@@ -1,7 +1,7 @@
 package aed;
 
 public class Berretacoin {
-
+    
     public Berretacoin(int n_usuarios){
         throw new UnsupportedOperationException("Implementar!");
     }
