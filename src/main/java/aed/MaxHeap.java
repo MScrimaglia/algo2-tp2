@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 public class MaxHeap<T extends Comparable<T>> {
     ArrayList<Handle> heap;
+    ArrayList<Handle> array;
 
     public class Handle {
         int indice;
@@ -23,17 +24,53 @@ public class MaxHeap<T extends Comparable<T>> {
     }
 
     public MaxHeap() {
-        heap = new ArrayList<>();
+        this.heap = new ArrayList<>();
+        this.array = new ArrayList<>();
     }
 
-    public void insertar(T valor) {
+    public MaxHeap(Handle[] a) {
+        heap = new ArrayList<>();
+
+        for(int i=0; i<a.length ; i++){
+            
+        }
+
+
+        for(int i = a.length-1/2; i >= 0; i--) {
+            siftUp(a[i]);
+        }
+    }
+
+    public int cantidadElementos() {
+        return heap.size();
+    }
+
+    public Handle insertar(T valor) {
         Handle newHandle = new Handle(heap.size(), valor);
         heap.add(newHandle);
         siftUp(newHandle);
+        return newHandle;
     }
 
     public T maximo() {
+        if (cantidadElementos() == 0) {
+            return null;
+        }
         return heap.get(0).valor();
+    }
+
+    public Handle extraerRaiz(){
+        if (cantidadElementos() == 0) {
+            return null;
+        }
+        Handle raiz = heap.get(0);
+        Handle ultimoElemento = heap.get(heap.size() - 1);
+        intercambiar(raiz.indice, ultimoElemento.indice());
+        heap.remove(heap.size() - 1);
+        if (cantidadElementos() > 0) {
+            siftDown(heap.get(0));
+        }
+        return raiz;
     }
 
     private void siftDown(Handle h) {
@@ -45,14 +82,19 @@ public class MaxHeap<T extends Comparable<T>> {
     
     private Handle hijoIzquierdo(Handle h){
         int indiceHijoIzq = h.indice * 2 + 1;
+        if (indiceHijoIzq >= cantidadElementos()) {
+            return null;
+        }
         return heap.get(indiceHijoIzq);
     }
     
     private Handle hijoDerecho(Handle h){
         int indiceHijoDer =h.indice * 2+ 2;
+        if (indiceHijoDer >= cantidadElementos()) {
+            return null;
+        }
         return heap.get(indiceHijoDer);
     }
-
     
     private Handle hijoMayor(Handle h) {
         if (hijoIzquierdo(h) == null) {
@@ -69,6 +111,9 @@ public class MaxHeap<T extends Comparable<T>> {
     
     private Handle padre(Handle h){
         int indicePadre = (int) (h.indice - 1) / 2;
+        if (h.indice == 0 || indicePadre >= cantidadElementos()) {
+            return null;
+        }
         return heap.get(indicePadre);
     }
 
@@ -87,6 +132,4 @@ public class MaxHeap<T extends Comparable<T>> {
         heap.set(i, jTemp);
         heap.set(j, iTemp);
     }
-
-
 }

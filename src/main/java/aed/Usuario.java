@@ -25,6 +25,9 @@ public class Usuario implements Comparable<Usuario>{
 
     @Override
     public int compareTo(Usuario otro) {
-        return this.saldo - otro.saldo;
+        if (this.saldo != otro.saldo) {
+            return this.saldo - otro.saldo;
+        } 
+        return this.id - otro.id;
     }
 }

@@ -1,9 +1,9 @@
 package aed;
+import java.util.ArrayList;
 
 public class Usuarios {
 
-    private Usuario[] arregloUsuarios;  // arreglo de usuarios
-    private HeapUsuarios heap;          // heap de usuarios
+    private MaxHeap heap;                          // heap de usuarios
     private int cantidadUsuarios;
 
     // Crear el heap
