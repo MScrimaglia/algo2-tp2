@@ -2,8 +2,8 @@ package aed;
 import java.util.ArrayList;
 
 public class MaxHeap<T extends Comparable<T>> {
-    ArrayList<Handle> heap;
-    ArrayList<Handle> array;
+    private ArrayList<Handle> heap;
+    private ArrayList<Handle> array;
 
     public class Handle {
         int indiceHeap;
@@ -18,6 +18,10 @@ public class MaxHeap<T extends Comparable<T>> {
 
         public int indiceHeap() {
             return indiceHeap;
+        }
+
+        public int indiceArray() {
+            return indiceArray;
         }
 
         public T valor() {
@@ -62,6 +66,22 @@ public class MaxHeap<T extends Comparable<T>> {
         return newHandle;
     } */
 
+    // O(log n)
+    public void modificarPorId(int id, T valor) {
+        T valorAnterior = array.get(id).valor();
+        int hIndex = array.get(id).indiceHeap();
+
+        heap.get(hIndex).valor = valor;
+
+        if (valor.compareTo(valorAnterior) > 0) {
+            siftUp(heap.get(hIndex));
+        }
+        else if (valor.compareTo(valorAnterior) < 0) {
+            siftDown(heap.get(hIndex));
+        }
+
+    }
+
     // O(1)
     public T maximo() {
         if (cantidadElementos() == 0) {
@@ -84,13 +104,6 @@ public class MaxHeap<T extends Comparable<T>> {
             siftDown(heap.get(0));
         }
         return raiz.valor();
-    }
-
-    private void siftDown(Handle h) {
-        if (hijoMayor(h) != null && h.valor.compareTo(hijoMayor(h).valor) < 0) {
-            intercambiar(h.indiceHeap,hijoMayor(h).indiceHeap);
-            siftDown(h);
-        }
     }
     
     private Handle hijoIzquierdo(Handle h){
@@ -134,6 +147,13 @@ public class MaxHeap<T extends Comparable<T>> {
         if (padre(h) != null && h.valor.compareTo(padre(h).valor) > 0) {
             intercambiar(h.indiceHeap(), padre(h).indiceHeap());
             siftUp(h);
+        }
+    }
+
+    private void siftDown(Handle h) {
+        if (hijoMayor(h) != null && h.valor.compareTo(hijoMayor(h).valor) < 0) {
+            intercambiar(h.indiceHeap,hijoMayor(h).indiceHeap);
+            siftDown(h);
         }
     }
 
