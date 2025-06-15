@@ -6,16 +6,18 @@ public class MaxHeap<T extends Comparable<T>> {
     ArrayList<Handle> array;
 
     public class Handle {
-        int indice;
+        int indiceHeap;
+        int indiceArray;
         T valor;
         
-        public Handle(int indice, T valor) {
-            this.indice = indice;
+        public Handle(int indiceHeap, int indiceArray, T valor) {
+            this.indiceHeap = indiceHeap;
+            this.indiceArray = indiceArray;
             this.valor = valor;
         }
 
-        public int indice() {
-            return indice;
+        public int indiceHeap() {
+            return indiceHeap;
         }
 
         public T valor() {
@@ -28,30 +30,39 @@ public class MaxHeap<T extends Comparable<T>> {
         this.array = new ArrayList<>();
     }
 
-    public MaxHeap(Handle[] a) {
-        heap = new ArrayList<>();
+    // Constructor que toma array de elementos de tipo T, complejidad O(n)
+    public MaxHeap(T[] a) {
+        heap = new ArrayList<>(a.length);
+        array = new ArrayList<>(a.length);
 
-        for(int i=0; i<a.length ; i++){
-            
+        // Creo heap y array de handles, O(n)
+        for (int i = 0; i < a.length; i++) {
+            Handle newHandle = new Handle(i, i, a[i]);
+            heap.add(newHandle);
+            array.add(newHandle);
         }
 
-
-        for(int i = a.length-1/2; i >= 0; i--) {
-            siftUp(a[i]);
+        // Ordeno el heap (heapify), O(n)
+        for(int i = (heap.size() - 1) / 2; i >= 0; i--) {
+            siftDown(heap.get(i));
         }
     }
 
+    // O(1)
     public int cantidadElementos() {
         return heap.size();
     }
 
-    public Handle insertar(T valor) {
+    // No se va a usar
+    /*  // O(log n)
+        public Handle insertar(T valor) {
         Handle newHandle = new Handle(heap.size(), valor);
         heap.add(newHandle);
         siftUp(newHandle);
         return newHandle;
-    }
+    } */
 
+    // O(1)
     public T maximo() {
         if (cantidadElementos() == 0) {
             return null;
@@ -59,29 +70,31 @@ public class MaxHeap<T extends Comparable<T>> {
         return heap.get(0).valor();
     }
 
-    public Handle extraerRaiz(){
+    // O(log n)
+    public T extraerRaiz(){
         if (cantidadElementos() == 0) {
             return null;
         }
         Handle raiz = heap.get(0);
         Handle ultimoElemento = heap.get(heap.size() - 1);
-        intercambiar(raiz.indice, ultimoElemento.indice());
-        heap.remove(heap.size() - 1);
+        intercambiar(raiz.indiceHeap, ultimoElemento.indiceHeap());
+        array.set(raiz.indiceArray, null);
+        heap.remove(heap.size() - 1); // O(1) al eliminar el último elemento
         if (cantidadElementos() > 0) {
             siftDown(heap.get(0));
         }
-        return raiz;
+        return raiz.valor();
     }
 
     private void siftDown(Handle h) {
         if (hijoMayor(h) != null && h.valor.compareTo(hijoMayor(h).valor) < 0) {
-            intercambiar(h.indice,hijoMayor(h).indice);
+            intercambiar(h.indiceHeap,hijoMayor(h).indiceHeap);
             siftDown(h);
         }
     }
     
     private Handle hijoIzquierdo(Handle h){
-        int indiceHijoIzq = h.indice * 2 + 1;
+        int indiceHijoIzq = h.indiceHeap * 2 + 1;
         if (indiceHijoIzq >= cantidadElementos()) {
             return null;
         }
@@ -89,7 +102,7 @@ public class MaxHeap<T extends Comparable<T>> {
     }
     
     private Handle hijoDerecho(Handle h){
-        int indiceHijoDer =h.indice * 2+ 2;
+        int indiceHijoDer =h.indiceHeap * 2+ 2;
         if (indiceHijoDer >= cantidadElementos()) {
             return null;
         }
@@ -110,8 +123,8 @@ public class MaxHeap<T extends Comparable<T>> {
     }
     
     private Handle padre(Handle h){
-        int indicePadre = (int) (h.indice - 1) / 2;
-        if (h.indice == 0 || indicePadre >= cantidadElementos()) {
+        int indicePadre = (int) (h.indiceHeap - 1) / 2;
+        if (h.indiceHeap == 0 || indicePadre >= cantidadElementos()) {
             return null;
         }
         return heap.get(indicePadre);
@@ -119,16 +132,19 @@ public class MaxHeap<T extends Comparable<T>> {
 
     private void siftUp(Handle h) {
         if (padre(h) != null && h.valor.compareTo(padre(h).valor) > 0) {
-            intercambiar(h.indice(), padre(h).indice());
+            intercambiar(h.indiceHeap(), padre(h).indiceHeap());
             siftUp(h);
         }
     }
 
+    // O(1)
     private void intercambiar(int i, int j) {
         Handle iTemp = heap.get(i);
         Handle jTemp = heap.get(j);
-        iTemp.indice = j;
-        jTemp.indice = i;
+        iTemp.indiceHeap = j;
+        jTemp.indiceHeap = i;
+        array.set(iTemp.indiceArray, iTemp);
+        array.set(jTemp.indiceArray, jTemp);
         heap.set(i, jTemp);
         heap.set(j, iTemp);
     }
