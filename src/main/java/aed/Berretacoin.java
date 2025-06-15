@@ -1,13 +1,15 @@
 package aed;
 
 public class Berretacoin {
-
+    private Usuarios usuarios;
+    private Blockchain blockchain;
+    
     public Berretacoin(int n_usuarios){
-        throw new UnsupportedOperationException("Implementar!");
+        this.usuarios = new Usuarios(n_usuarios);
+        this.blockchain = new Blockchain();
     }
 
     public void agregarBloque(Transaccion[] transacciones){
-        throw new UnsupportedOperationException("Implementar!");
     }
 
     public Transaccion txMayorValorUltimoBloque(){

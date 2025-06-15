@@ -15,12 +15,24 @@ public class Transaccion implements Comparable<Transaccion> {
 
     @Override
     public int compareTo(Transaccion otro) {
-        throw new UnsupportedOperationException("Implementar!");
+        return this.monto - otro.monto;
     }
 
     @Override
     public boolean equals(Object otro){
-        throw new UnsupportedOperationException("Implementar!");
+        boolean otroEsNull = (otro == null);
+        boolean claseDistinta = this.getClass() != otro.getClass();
+
+        if (otroEsNull || claseDistinta) {
+            return false;
+        }
+
+        Transaccion otraTransaccion = (Transaccion) otro;
+
+        return this.id_comprador() == otraTransaccion.id_comprador()
+            && this.id_vendedor() == otraTransaccion.id_vendedor()
+            && this.monto() == otraTransaccion.monto()
+            && this.id() == otraTransaccion.id();   // Hay que agregar el id en equals?
     }
 
     public int monto() {
@@ -33,5 +45,9 @@ public class Transaccion implements Comparable<Transaccion> {
     
     public int id_vendedor() {
         return id_vendedor;
+    }
+
+    public int id() {
+        return id;
     }
 }
