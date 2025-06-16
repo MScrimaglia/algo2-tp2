@@ -43,7 +43,7 @@ public class Usuarios {
         return this.cantidadUsuarios;
     }
 
-    public Usuario maximoTenedor() {
-        return this.heapUsuarios.maximo();
+    public int maximoTenedor() {
+        return this.heapUsuarios.maximo().getId();
     }
 }

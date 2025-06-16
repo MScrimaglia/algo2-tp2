@@ -2,7 +2,7 @@ package aed;
 
 public class Bloque {
     private int id;
-    private int montoMedio;    // Este atributo es para que montoMedioUltimoBloque() sea O(1)
+    private int montoMedio;    // Este atributo es para que montoMedioUltimoBloque() sea O(1), no cuenta las de creación
     private MaxHeap<Transaccion> transacciones;
 
     public Bloque(Transaccion[] trans, int id) {
@@ -12,6 +12,10 @@ public class Bloque {
         for (Transaccion t: trans) {
             montoTotal += t.monto();   
         }
+        if (this.id < 3000) {
+            montoTotal--;   // si hay menos de 3000 bloques resto el monto de la transacción de creación (1)
+        }
+
         this.montoMedio = montoTotal / trans.length;
 
         this.transacciones = new MaxHeap<>(trans);
