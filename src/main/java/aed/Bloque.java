@@ -1,5 +1,7 @@
 package aed;
 
+import java.util.ArrayList;
+
 public class Bloque {
     private int id;
     private int montoMedio;    // Este atributo es para que montoMedioUltimoBloque() sea O(1), no cuenta las de creación
@@ -29,9 +31,15 @@ public class Bloque {
         return montoMedio;
     }
 
-    // public ListaEnlazada<Transaccion> getTransacciones() {
-    //     return transacciones;
-    // }
+    public Transaccion[] getTransaccionesPorID() {
+        ArrayList<MaxHeap<Transaccion>.Handle> handles = transacciones.getHandlesArray();
+
+        Transaccion[] res = new Transaccion[handles.size()];
+        for (int i = 0; i < handles.size(); i++) {
+            res[i] = handles.get(i).valor();
+        }
+        return res;
+    }
 
     public Transaccion extraerMaximaTransaccion() {
         return this.transacciones.extraerRaiz();

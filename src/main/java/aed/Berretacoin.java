@@ -18,7 +18,7 @@ public class Berretacoin {
     }
 
     public Transaccion[] txUltimoBloque(){
-        throw new UnsupportedOperationException("Implementar!");
+        return this.blockchain.ultimoBloque().getTransaccionesPorID();
     }
 
     public int maximoTenedor(){
@@ -31,12 +31,19 @@ public class Berretacoin {
 
     public void hackearTx(){
         // restauro el monto de la transacción al comprador y al vendedor
-        int idVendedor = this.blockchain.ultimoBloque().maximaTransaccion().id_vendedor();
-        int idComprador = this.blockchain.ultimoBloque().maximaTransaccion().id_comprador();
-        int monto = this.blockchain.ultimoBloque().maximaTransaccion().monto();
+        Transaccion transaccionAHackear = this.blockchain.ultimoBloque().maximaTransaccion();
+        if (transaccionAHackear == null) return;
 
-        this.usuarios.sumarSaldo(idComprador, monto);
-        this.usuarios.restarSaldo(idVendedor, monto);
+        int idVendedor = transaccionAHackear.id_vendedor();
+        int idComprador = transaccionAHackear.id_comprador();
+        int monto = transaccionAHackear.monto();
+
+        if (idComprador == 0) {
+            usuarios.restarSaldo(idVendedor, monto);
+        } else {
+            this.usuarios.sumarSaldo(idComprador, monto);
+            this.usuarios.restarSaldo(idVendedor, monto);
+        }
 
         // extraigo la transacción de mayor monto del último bloque
         this.blockchain.ultimoBloque().extraerMaximaTransaccion();

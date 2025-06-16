@@ -57,6 +57,11 @@ public class MaxHeap<T extends Comparable<T>> {
         return heap.size();
     }
 
+    public ArrayList<Handle> getHandlesArray() {
+        return this.array;
+    }
+    
+
     // No se va a usar
     /*  // O(log n)
         public Handle insertar(T valor) {
