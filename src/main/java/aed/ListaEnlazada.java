@@ -90,6 +90,15 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
         return nodoActual.elemento;
     }
 
+    public Nodo obtenerNodo(int i) {
+        Nodo nodoActual = primero;
+        while (i > 0) {
+            nodoActual = nodoActual.siguiente;
+            i--;
+        }
+        return nodoActual;
+    }
+
     public void eliminar(int i) {
         Nodo nodoActual = primero;
         while (i > 0) {
@@ -129,10 +138,6 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
             nodo.anterior.siguiente = nodo.siguiente;
             nodo.siguiente.anterior = nodo.anterior;
         }
-    }
-
-    public void modificarIndiceHeap(int i, int indiceHeap) {
-
     }
 
     public void modificarPosicion(int indice, T elem) {

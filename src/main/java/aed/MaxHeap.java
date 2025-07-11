@@ -58,7 +58,8 @@ public class MaxHeap<T extends Comparable<T>> {
         this.lista = new ListaEnlazada<>();
     }
 
-    // Constructor que toma array de elementos de tipo T, complejidad O(n)
+    // Constructor que toma array de elementos de tipo T
+    // O(n)
     public MaxHeap(T[] a) {
         heap = new ArrayList<>(a.length);
         lista = new ListaEnlazada<>();
@@ -92,10 +93,12 @@ public class MaxHeap<T extends Comparable<T>> {
         return this.lista.obtener(idLista);
     } */
     
+    // O(log n)
     public void bajar(ListaEnlazada.Nodo n) {
         siftDown(n);
     }
 
+    // O(log n)
     public void subir(ListaEnlazada.Nodo n) {
         siftUp(n);
     }
@@ -147,13 +150,13 @@ public class MaxHeap<T extends Comparable<T>> {
         ListaEnlazada<T>.Nodo raiz = heap.get(0);
         ListaEnlazada<T>.Nodo ultimoElemento = heap.get(heap.size() - 1);
 
-        intercambiar(raiz.indiceHeap, ultimoElemento.indiceHeap);
+        intercambiar(raiz.indiceHeap, ultimoElemento.indiceHeap);   // O(1)
         heap.remove(heap.size() - 1); // O(1) al eliminar el último elemento
         if (cantidadElementos() > 0) {
-            siftDown(heap.get(0));
+            siftDown(heap.get(0));  // O(log n)
         }
 
-        lista.eliminarPorNodo(raiz);
+        lista.eliminarPorNodo(raiz);    // O(1)
 
         return raiz.elemento;
     }
@@ -195,6 +198,7 @@ public class MaxHeap<T extends Comparable<T>> {
         return heap.get(indicePadre);
     }
 
+    // O(log n)
     private void siftUp(ListaEnlazada.Nodo n) {
         if (padre(n) != null && n.elemento.compareTo(padre(n).elemento) > 0) {
             intercambiar(n.indiceHeap, padre(n).indiceHeap);
@@ -202,6 +206,7 @@ public class MaxHeap<T extends Comparable<T>> {
         }
     }
 
+    // O(log n)
     private void siftDown(ListaEnlazada.Nodo n) {
         if (hijoMayor(n) != null && n.elemento.compareTo(hijoMayor(n).elemento) < 0) {
             intercambiar(n.indiceHeap,hijoMayor(n).indiceHeap);

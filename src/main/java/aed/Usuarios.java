@@ -24,19 +24,19 @@ public class Usuarios {
         Usuario u = getUsuario(id);
         u.setSaldo(u.getSaldo() + monto);
 
-        MaxHeap<Usuario>.Handle h = heapUsuarios.getArray().get(id - 1);
+        ListaEnlazada.Nodo n = heapUsuarios.getLista().obtenerNodo(id - 1); // O(n)
 
         //reordeno el heap
-        this.heapUsuarios.subir(h);
+        this.heapUsuarios.subir(n); // O(log n)
     }
 
     public void restarSaldo(int id, int monto) {
         Usuario u = getUsuario(id);
         u.setSaldo(u.getSaldo() - monto);
 
-        MaxHeap<Usuario>.Handle h = heapUsuarios.getArray().get(id - 1);
+        ListaEnlazada.Nodo n = heapUsuarios.getLista().obtenerNodo(id - 1); // O(n)
 
-        this.heapUsuarios.bajar(h);
+        this.heapUsuarios.bajar(n); // O(log n)
     }
 
     public int cantidadUsuarios() {

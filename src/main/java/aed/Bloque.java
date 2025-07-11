@@ -52,12 +52,15 @@ public class Bloque implements Comparable<Bloque> {
     }
 
     public Transaccion[] getTransaccionesPorID() {
-        ArrayList<MaxHeap<Transaccion>.Handle> handles = transacciones.getArray();
+        ListaEnlazada<Transaccion> t = transacciones.getLista();
+        Iterador<Transaccion> iterador = t.iterador();
 
-        Transaccion[] res = new Transaccion[handles.size()];
-        for (int i = 0; i < handles.size(); i++) {
-            res[i] = handles.get(i).valor();
+        Transaccion[] res = new Transaccion[t.longitud()];
+
+        for (int i = 0; i < t.longitud(); i++) {
+            res[i] = iterador.siguiente();
         }
+        
         return res;
     }
 
