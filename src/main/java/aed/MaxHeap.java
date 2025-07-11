@@ -2,48 +2,72 @@ package aed;
 import java.util.ArrayList;
 
 public class MaxHeap<T extends Comparable<T>> {
-    private ArrayList<Handle> heap;
-    private ArrayList<Handle> array;
+    private ArrayList<ListaEnlazada<T>.Nodo> heap;
+    private ListaEnlazada<T> lista;
 
     public class Handle {
         int indiceHeap;
-        int indiceArray;
+        int indiceLista;
         T valor;
         
-        public Handle(int indiceHeap, int indiceArray, T valor) {
+        // O(1)
+        public Handle(int indiceHeap, int indiceLista, T valor) {
             this.indiceHeap = indiceHeap;
-            this.indiceArray = indiceArray;
+            this.indiceLista = indiceLista;
             this.valor = valor;
         }
 
+        // O(1)
         public int indiceHeap() {
             return indiceHeap;
         }
 
-        public int indiceArray() {
-            return indiceArray;
+        // O(1)
+        public int indiceLista() {
+            return indiceLista;
         }
 
+        // O(1)
         public T valor() {
             return valor;
         }
     }
 
+    /* public class HeapHandle {
+        private ListaEnlazada.Nodo nodo;
+        private T valor;
+
+        public HeapHandle(ListaEnlazada.Nodo nodo, T valor) {
+            this.nodo = nodo;
+        }
+
+        // O(1)
+        public ListaEnlazada.Nodo nodo() {
+            return nodo;
+        }
+
+        // O(1)
+        public T valor() {
+            return valor;
+        }
+    } */
+
+    // O(1)
     public MaxHeap() {
         this.heap = new ArrayList<>();
-        this.array = new ArrayList<>();
+        this.lista = new ListaEnlazada<>();
     }
 
     // Constructor que toma array de elementos de tipo T, complejidad O(n)
     public MaxHeap(T[] a) {
         heap = new ArrayList<>(a.length);
-        array = new ArrayList<>(a.length);
+        lista = new ListaEnlazada<>();
 
-        // Creo heap y array de handles, O(n)
+        // Creo heap y lista de handles, O(n)
         for (int i = 0; i < a.length; i++) {
             Handle newHandle = new Handle(i, i, a[i]);
-            heap.add(newHandle);
-            array.add(newHandle);
+            lista.agregarAtras(a[i]);
+            heap.add(lista.ultimoNodo());
         }
 
         // Ordeno el heap (heapify), O(n)
@@ -57,20 +81,23 @@ public class MaxHeap<T extends Comparable<T>> {
         return heap.size();
     }
 
-    public ArrayList<Handle> getArray() {
-        return this.array;
+    // O(1)
+    public ListaEnlazada<T> getLista() {
+        return this.lista;
     }
 
-    public Handle getHandleArray(int idArray) {
-        return this.array.get(idArray);
-    }
+    // O(n)
+    // No se usa
+    /* public Handle getHandleLista(int idLista) {
+        return this.lista.obtener(idLista);
+    } */
     
-    public void bajar(Handle h) {
-        siftDown(h);
+    public void bajar(ListaEnlazada.Nodo n) {
+        siftDown(n);
     }
 
-    public void subir(Handle h) {
-        siftUp(h);
+    public void subir(ListaEnlazada.Nodo n) {
+        siftUp(n);
     }
 
     // No se va a usar
@@ -83,7 +110,8 @@ public class MaxHeap<T extends Comparable<T>> {
     } */
 
     // O(log n)
-    public void modificarPorId(int id, T valor) {
+    // No se usa (ya no valido con lista enlazada)
+    /* public void modificarPorId(int id, T valor) {
         T valorAnterior = array.get(id).valor();
         int hIndex = array.get(id).indiceHeap();
 
@@ -96,10 +124,11 @@ public class MaxHeap<T extends Comparable<T>> {
             siftDown(heap.get(hIndex));
         }
 
-    }
+    } */
 
+    // O(n)
     public T obtenerPorId(int id) {
-        return array.get(id - 1).valor();
+        return lista.obtener(id - 1);
     }
 
     // O(1)
@@ -107,7 +136,7 @@ public class MaxHeap<T extends Comparable<T>> {
         if (cantidadElementos() == 0) {
             return null;
         }
-        return heap.get(0).valor();
+        return heap.get(0).elemento;
     }
 
     // O(log n)
@@ -115,82 +144,77 @@ public class MaxHeap<T extends Comparable<T>> {
         if (cantidadElementos() == 0) {
             return null;
         }
-        Handle raiz = heap.get(0);
-        Handle ultimoElemento = heap.get(heap.size() - 1);
+        ListaEnlazada<T>.Nodo raiz = heap.get(0);
+        ListaEnlazada<T>.Nodo ultimoElemento = heap.get(heap.size() - 1);
 
-        intercambiar(raiz.indiceHeap, ultimoElemento.indiceHeap());
+        intercambiar(raiz.indiceHeap, ultimoElemento.indiceHeap);
         heap.remove(heap.size() - 1); // O(1) al eliminar el último elemento
         if (cantidadElementos() > 0) {
             siftDown(heap.get(0));
         }
 
-        array.remove(raiz.indiceArray);
-        for (int i = raiz.indiceArray; i < array.size(); i++) {
-            array.get(i).indiceArray = i;
-        }
+        lista.eliminarPorNodo(raiz);
 
-        return raiz.valor();
+        return raiz.elemento;
     }
     
-    private Handle hijoIzquierdo(Handle h){
-        int indiceHijoIzq = h.indiceHeap * 2 + 1;
+    private ListaEnlazada.Nodo hijoIzquierdo(ListaEnlazada.Nodo n){
+        int indiceHijoIzq = n.indiceHeap * 2 + 1;
         if (indiceHijoIzq >= cantidadElementos()) {
             return null;
         }
         return heap.get(indiceHijoIzq);
     }
     
-    private Handle hijoDerecho(Handle h){
-        int indiceHijoDer =h.indiceHeap * 2+ 2;
+    private ListaEnlazada.Nodo hijoDerecho(ListaEnlazada.Nodo n){
+        int indiceHijoDer = n.indiceHeap * 2 + 2;
         if (indiceHijoDer >= cantidadElementos()) {
             return null;
         }
         return heap.get(indiceHijoDer);
     }
     
-    private Handle hijoMayor(Handle h) {
-        if (hijoIzquierdo(h) == null) {
+    private ListaEnlazada.Nodo hijoMayor(ListaEnlazada.Nodo n) {
+        if (hijoIzquierdo(n) == null) {
             return null;
         }
-        if (hijoDerecho(h) == null) {
-            return hijoIzquierdo(h);
+        if (hijoDerecho(n) == null) {
+            return hijoIzquierdo(n);
         }
-        if (hijoIzquierdo(h).valor().compareTo(hijoDerecho(h).valor()) < 0) {
-            return hijoDerecho(h);
+        if (hijoIzquierdo(n).elemento.compareTo(hijoDerecho(n).elemento) < 0) {
+            return hijoDerecho(n);
         }
-        return hijoIzquierdo(h);
+        return hijoIzquierdo(n);
     }
     
-    private Handle padre(Handle h){
-        int indicePadre = (int) (h.indiceHeap - 1) / 2;
-        if (h.indiceHeap == 0 || indicePadre >= cantidadElementos()) {
+    private ListaEnlazada.Nodo padre(ListaEnlazada.Nodo n){
+        int indicePadre = (int) (n.indiceHeap - 1) / 2;
+        if (n.indiceHeap == 0 || indicePadre >= cantidadElementos()) {
             return null;
         }
         return heap.get(indicePadre);
     }
 
-    private void siftUp(Handle h) {
-        if (padre(h) != null && h.valor.compareTo(padre(h).valor) > 0) {
-            intercambiar(h.indiceHeap(), padre(h).indiceHeap());
-            siftUp(h);
+    private void siftUp(ListaEnlazada.Nodo n) {
+        if (padre(n) != null && n.elemento.compareTo(padre(n).elemento) > 0) {
+            intercambiar(n.indiceHeap, padre(n).indiceHeap);
+            siftUp(n);
         }
     }
 
-    private void siftDown(Handle h) {
-        if (hijoMayor(h) != null && h.valor.compareTo(hijoMayor(h).valor) < 0) {
-            intercambiar(h.indiceHeap,hijoMayor(h).indiceHeap);
-            siftDown(h);
+    private void siftDown(ListaEnlazada.Nodo n) {
+        if (hijoMayor(n) != null && n.elemento.compareTo(hijoMayor(n).elemento) < 0) {
+            intercambiar(n.indiceHeap,hijoMayor(n).indiceHeap);
+            siftDown(n);
         }
     }
 
     // O(1)
     private void intercambiar(int i, int j) {
-        Handle iTemp = heap.get(i);
-        Handle jTemp = heap.get(j);
+        ListaEnlazada.Nodo iTemp = heap.get(i);
+        ListaEnlazada.Nodo jTemp = heap.get(j);
         iTemp.indiceHeap = j;
         jTemp.indiceHeap = i;
-        array.set(iTemp.indiceArray, iTemp);
-        array.set(jTemp.indiceArray, jTemp);
         heap.set(i, jTemp);
         heap.set(j, iTemp);
     }

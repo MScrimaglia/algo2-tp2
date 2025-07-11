@@ -9,7 +9,7 @@ public class Blockchain {
 
     public void agregarBloque(Transaccion[] trans) {
         Bloque nuevoBloque = new Bloque(trans, bloques.longitud() + 1);
-        bloques.agregar(nuevoBloque);
+        bloques.agregarAtras(nuevoBloque);
     }
 
     public Bloque primerBloque() {

@@ -2,7 +2,7 @@ package aed;
 
 import java.util.ArrayList;
 
-public class Bloque {
+public class Bloque implements Comparable<Bloque> {
     private int id;
     private int montoTotal;    // Estos atributos son para que montoMedioUltimoBloque() sea O(1), no cuenta las de creación
     private int cantTransacciones;
@@ -68,6 +68,11 @@ public class Bloque {
 
     public Transaccion maximaTransaccion() {
         return this.transacciones.maximo();
+    }
+
+    @Override
+    public int compareTo(Bloque otro) {
+        return this.id - otro.id;
     }
 
 }
