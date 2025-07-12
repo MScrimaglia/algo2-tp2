@@ -36,8 +36,8 @@ public class Berretacoin {
 
     public Transaccion[] txUltimoBloque(){ 
         /*
-         * Devuelve las transacciones del último bloque.
-         * La complejidad es O(1) porque pasa el array como la lista enlazada ya almacenada.
+         * Devuelve un arreglo con las transacciones del último bloque.
+         * La complejidad es O(n) porque se recorre la lista enlazada del heap para agregar cada elemento al arreglo.
          */
         if (this.blockchain.ultimoBloque() == null) {
             return new Transaccion[0];
@@ -48,8 +48,8 @@ public class Berretacoin {
     public int maximoTenedor(){
         /*
          * El máximo tenedor es el usuario que tiene más saldo acumulado.
-         * La complejidad es O(1) porque es un Heap y podemos acceder al máximo directamente.
-         * Ya que su maximo esta en la raiz.
+         * La complejidad es O(1) porque al estar almacenado en un Heap podemos acceder al máximo directamente
+         * ya que este se encuentra en la raiz.
          */
         return this.usuarios.maximoTenedor();
     }
@@ -57,9 +57,8 @@ public class Berretacoin {
     public int montoMedioUltimoBloque(){
         /*
          * El monto medio del último bloque es el promedio de los montos de las transacciones.
-         * La complejidad es O(1) porque el bloque ya tiene el monto medio calculado.
-         * Esto se debe a que el bloque almacena el monto total y la cantidad de transacciones,
-         * por lo que podemos calcular el promedio directamente.
+         * La complejidad es O(1) porque el bloque cuenta con el monto total y la cantidad de transacciones almacenadas,
+         * por lo que podemos calcular el promedio directamente con una división.
          */
         return this.blockchain.ultimoBloque().montoMedioBloque();
     }
@@ -69,22 +68,26 @@ public class Berretacoin {
          * 
          */
         // restauro el monto de la transacción al comprador y al vendedor
-        Transaccion transaccionAHackear = this.blockchain.ultimoBloque().maximaTransaccion();
-        if (transaccionAHackear == null) return;
+        Transaccion transaccionAHackear = this.blockchain.ultimoBloque().maximaTransaccion();   // O(1)
+
+        if (transaccionAHackear == null) {
+            return;
+        }
 
         int idVendedor = transaccionAHackear.id_vendedor();
         int idComprador = transaccionAHackear.id_comprador();
         int monto = transaccionAHackear.monto();
 
         if (idComprador == 0) {
-            usuarios.restarSaldo(idVendedor, monto);
+            usuarios.restarSaldo(idVendedor, monto);    // O(log P) ya que se debe reordenar el heap
         } 
         else {
-            this.usuarios.sumarSaldo(idComprador, monto);
-            this.usuarios.restarSaldo(idVendedor, monto);
+            this.usuarios.sumarSaldo(idComprador, monto);   // O(log P)
+            this.usuarios.restarSaldo(idVendedor, monto);   // O(log P)
         }
 
         // extraigo la transacción de mayor monto del último bloque
-        this.blockchain.ultimoBloque().extraerMaximaTransaccion();
+        this.blockchain.ultimoBloque().extraerMaximaTransaccion();  // O(log n)
     }
+    // Complejidad total: O(log n + log P)
 }
