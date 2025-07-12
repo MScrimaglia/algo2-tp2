@@ -10,17 +10,14 @@ public class Bloque implements Comparable<Bloque> {
 
     public Bloque(Transaccion[] trans, int id) {
         this.id = id;
-        
         this.montoTotal = 0;
-        this.cantTransacciones = trans.length;
+        this.cantTransacciones = 0;
         for (Transaccion t: trans) {
-            this.montoTotal += t.monto();   
+            if (t.id_comprador() != 0) {
+                this.montoTotal += t.monto();
+                this.cantTransacciones++;
+            }
         }
-        if (this.id < 3000) {
-            this.montoTotal--;   // si hay menos de 3000 bloques resto el monto de la transacción de creación (1)
-            this.cantTransacciones--;
-        }
-
         this.transacciones = new MaxHeap<>(trans);
     }
 
