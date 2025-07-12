@@ -18,9 +18,9 @@ public class Usuarios {
         ListaEnlazada<Usuario> listaUsuarios = this.heapUsuarios.getLista();
         ListaEnlazada<Usuario>.Nodo nodoActual = listaUsuarios.primerNodo();
         while (nodoActual != null) {
-            Usuario usuarioActual = nodoActual.elemento;
+            Usuario usuarioActual = nodoActual.getElemento();
             usuarioActual.setNodoEnHeap(nodoActual);
-            nodoActual = nodoActual.siguiente;
+            nodoActual = nodoActual.getSiguiente();
         }
     }
 
