@@ -55,8 +55,6 @@ public class Berretacoin {
             this.usuarios.restarSaldo(idVendedor, monto);
         }
 
-        this.blockchain.ultimoBloque().restarMontoTotal(monto);
-
         // extraigo la transacción de mayor monto del último bloque
         this.blockchain.ultimoBloque().extraerMaximaTransaccion();
     }

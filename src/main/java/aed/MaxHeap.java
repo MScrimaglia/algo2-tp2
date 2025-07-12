@@ -5,7 +5,7 @@ public class MaxHeap<T extends Comparable<T>> {
     private ArrayList<ListaEnlazada<T>.Nodo> heap;
     private ListaEnlazada<T> lista;
 
-    public class Handle {
+    /* public class Handle {
         int indiceHeap;
         int indiceLista;
         T valor;
@@ -31,7 +31,7 @@ public class MaxHeap<T extends Comparable<T>> {
         public T valor() {
             return valor;
         }
-    }
+    } */
 
     /* public class HeapHandle {
         private ListaEnlazada.Nodo nodo;
@@ -66,8 +66,7 @@ public class MaxHeap<T extends Comparable<T>> {
 
         // Creo heap y lista de handles, O(n)
         for (int i = 0; i < a.length; i++) {
-            Handle newHandle = new Handle(i, i, a[i]);
-            lista.agregarAtras(a[i]);
+            lista.agregarAtras(a[i], i);
             heap.add(lista.ultimoNodo());
         }
 

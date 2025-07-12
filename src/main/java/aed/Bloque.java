@@ -65,8 +65,12 @@ public class Bloque implements Comparable<Bloque> {
     }
 
     public Transaccion extraerMaximaTransaccion() {
-        this.cantTransacciones--;
-        return this.transacciones.extraerRaiz();
+        Transaccion t = this.transacciones.extraerRaiz();
+        if (t.id_comprador() != 0) {
+            this.cantTransacciones--;
+            this.restarMontoTotal(t.monto());
+        }
+        return t;
     }
 
     public Transaccion maximaTransaccion() {

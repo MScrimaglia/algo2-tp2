@@ -34,13 +34,7 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
     }
 
     public int longitud() {
-        int res = 0;
-        Nodo nodoActual = primero;
-        while (nodoActual != null) {
-            res++;
-            nodoActual = nodoActual.siguiente;
-        }
-        return res;
+        return this.longitud;
     }
 
     public void agregarAdelante(T elem, int indiceHeap) {
@@ -56,10 +50,12 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
         if (ultimo == null) {
             ultimo = nuevoNodo;
         }
+        longitud++;
     }
 
     public void agregarAdelante(T elem) {
         agregarAdelante(elem, -1); // -1 para indicar que no tiene índice de heap
+        longitud++;
     }
 
     public void agregarAtras(T elem, int indiceHeap) {
@@ -75,10 +71,12 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
         if (primero == null) {
             primero = nuevoNodo;
         }
+        longitud++;
     }
 
     public void agregarAtras(T elem) {
         agregarAtras(elem, -1); // -1 para indicar que no tiene índice de heap
+        longitud++;
     }
 
     public T obtener(int i) {
@@ -117,7 +115,7 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
         if (nodoActual.siguiente != null) {
             nodoActual.siguiente.anterior = nodoActual.anterior;
         }
-        
+        longitud--;
     }
 
     // O(1)
@@ -138,6 +136,10 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
             nodo.anterior.siguiente = nodo.siguiente;
             nodo.siguiente.anterior = nodo.anterior;
         }
+        else {
+            return;
+        }
+        longitud--;
     }
 
     public void modificarPosicion(int indice, T elem) {
