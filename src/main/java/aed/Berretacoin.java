@@ -17,10 +17,10 @@ public class Berretacoin {
          * Sumando en O(log n ) las transacciones al heap de transacciones,y en O(log p) los usuarios al heap de usuarios.
          */
         this.blockchain.agregarBloque(transacciones);
-        for (int i = 0; i < transacciones.length; i++) {
-            usuarios.sumarSaldo(transacciones[i].id_vendedor(), transacciones[i].monto());
+        for (int i = 0; i < transacciones.length; i++) {    // O(n)
+            usuarios.sumarSaldo(transacciones[i].id_vendedor(), transacciones[i].monto());  // O(log P)
             if (transacciones[i].id_comprador() != 0) {
-                usuarios.restarSaldo(transacciones[i].id_comprador(), transacciones[i].monto());
+                usuarios.restarSaldo(transacciones[i].id_comprador(), transacciones[i].monto());    // O(log P)
             }
         }
     }
@@ -31,7 +31,7 @@ public class Berretacoin {
          * La guardamos en una variable externa para no tener que recorrer el bloque y no sumar complejidad
          * Por ello es O(1) en vez de O(n) como sería recorrer el bloque.
          */
-        return this.blockchain.ultimoBloque().maximaTransaccion();
+        return this.blockchain.ultimoBloque().maximaTransaccion(); // O(1)
     }
 
     public Transaccion[] txUltimoBloque(){ 
@@ -42,7 +42,7 @@ public class Berretacoin {
         if (this.blockchain.ultimoBloque() == null) {
             return new Transaccion[0];
         }
-        return this.blockchain.ultimoBloque().getTransaccionesPorID();
+        return this.blockchain.ultimoBloque().getTransaccionesPorID();  // O(n)
     }
 
     public int maximoTenedor(){
@@ -51,7 +51,7 @@ public class Berretacoin {
          * La complejidad es O(1) porque al estar almacenado en un Heap podemos acceder al máximo directamente
          * ya que este se encuentra en la raiz.
          */
-        return this.usuarios.maximoTenedor();
+        return this.usuarios.maximoTenedor();   // O(1)
     }
 
     public int montoMedioUltimoBloque(){
@@ -60,12 +60,14 @@ public class Berretacoin {
          * La complejidad es O(1) porque el bloque cuenta con el monto total y la cantidad de transacciones almacenadas,
          * por lo que podemos calcular el promedio directamente con una división.
          */
-        return this.blockchain.ultimoBloque().montoMedioBloque();
+        return this.blockchain.ultimoBloque().montoMedioBloque();   // O(1)
     }
 
     public void hackearTx(){
         /*
-         * 
+         * Tras eliminar la máxima transacción debemos reordenar el heap de transacciones con complejidad O(log n)
+         * Luego al actualizar los saldos de los usuarios también debemos reordenar el heap de usuarios, con complehidad O(log P)
+         * La complejidad final es O(log n + log P)
          */
         // restauro el monto de la transacción al comprador y al vendedor
         Transaccion transaccionAHackear = this.blockchain.ultimoBloque().maximaTransaccion();   // O(1)

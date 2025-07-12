@@ -3,7 +3,7 @@ package aed;
 public class Usuarios {
     private MaxHeap<Usuario> heapUsuarios;  // heap de usuarios
     private int cantidadUsuarios;
-    private Usuario[] usuariosPorId;
+    private Usuario[] usuariosPorId;    // Arreglo con los usuarios ordenados por id para acceder al nodo de la lista enlazada en O(1) por id del usuario
 
     public Usuarios(int n) {
 
@@ -34,8 +34,8 @@ public class Usuarios {
 
     // O(log n)
     public void sumarSaldo(int id, int monto) {
-        Usuario u = getUsuario(id);
-        u.setSaldo(u.getSaldo() + monto);
+        Usuario u = getUsuario(id); // O(1)
+        u.setSaldo(u.getSaldo() + monto);   // O(1)
 
         ListaEnlazada.Nodo n = u.getNodoEnHeap(); // O(1)
 
@@ -44,8 +44,8 @@ public class Usuarios {
     }
 
     public void restarSaldo(int id, int monto) {
-        Usuario u = getUsuario(id);
-        u.setSaldo(u.getSaldo() - monto);
+        Usuario u = getUsuario(id); // O(1)
+        u.setSaldo(u.getSaldo() - monto);   // O(1)
 
         ListaEnlazada.Nodo n = u.getNodoEnHeap(); // O(1)
 
