@@ -138,7 +138,7 @@ public class MaxHeap<T extends Comparable<T>> {
         if (cantidadElementos() == 0) {
             return null;
         }
-        return heap.get(0).elemento;
+        return heap.get(0).getElemento();
     }
 
     // O(log n)
@@ -149,7 +149,7 @@ public class MaxHeap<T extends Comparable<T>> {
         ListaEnlazada<T>.Nodo raiz = heap.get(0);
         ListaEnlazada<T>.Nodo ultimoElemento = heap.get(heap.size() - 1);
 
-        intercambiar(raiz.indiceHeap, ultimoElemento.indiceHeap);   // O(1)
+        intercambiar(raiz.getIndiceHeap(), ultimoElemento.getIndiceHeap());   // O(1)
         heap.remove(heap.size() - 1); // O(1) al eliminar el último elemento
         if (cantidadElementos() > 0) {
             siftDown(heap.get(0));  // O(log n)
@@ -157,11 +157,11 @@ public class MaxHeap<T extends Comparable<T>> {
 
         lista.eliminarPorNodo(raiz);    // O(1)
 
-        return raiz.elemento;
+        return raiz.getElemento();
     }
     
     private ListaEnlazada.Nodo hijoIzquierdo(ListaEnlazada.Nodo n){
-        int indiceHijoIzq = n.indiceHeap * 2 + 1;
+        int indiceHijoIzq = n.getIndiceHeap() * 2 + 1;
         if (indiceHijoIzq >= cantidadElementos()) {
             return null;
         }
@@ -169,7 +169,7 @@ public class MaxHeap<T extends Comparable<T>> {
     }
     
     private ListaEnlazada.Nodo hijoDerecho(ListaEnlazada.Nodo n){
-        int indiceHijoDer = n.indiceHeap * 2 + 2;
+        int indiceHijoDer = n.getIndiceHeap() * 2 + 2;
         if (indiceHijoDer >= cantidadElementos()) {
             return null;
         }
@@ -183,15 +183,15 @@ public class MaxHeap<T extends Comparable<T>> {
         if (hijoDerecho(n) == null) {
             return hijoIzquierdo(n);
         }
-        if (hijoIzquierdo(n).elemento.compareTo(hijoDerecho(n).elemento) < 0) {
+        if (hijoIzquierdo(n).getElemento().compareTo(hijoDerecho(n).getElemento()) < 0) {
             return hijoDerecho(n);
         }
         return hijoIzquierdo(n);
     }
     
     private ListaEnlazada.Nodo padre(ListaEnlazada.Nodo n){
-        int indicePadre = (int) (n.indiceHeap - 1) / 2;
-        if (n.indiceHeap == 0 || indicePadre >= cantidadElementos()) {
+        int indicePadre = (int) (n.getIndiceHeap() - 1) / 2;
+        if (n.getIndiceHeap() == 0 || indicePadre >= cantidadElementos()) {
             return null;
         }
         return heap.get(indicePadre);
@@ -199,16 +199,16 @@ public class MaxHeap<T extends Comparable<T>> {
 
     // O(log n)
     private void siftUp(ListaEnlazada.Nodo n) {
-        if (padre(n) != null && n.elemento.compareTo(padre(n).elemento) > 0) {
-            intercambiar(n.indiceHeap, padre(n).indiceHeap);
+        if (padre(n) != null && n.getElemento().compareTo(padre(n).getElemento()) > 0) {
+            intercambiar(n.getIndiceHeap(), padre(n).getIndiceHeap());
             siftUp(n);
         }
     }
 
     // O(log n)
     private void siftDown(ListaEnlazada.Nodo n) {
-        if (hijoMayor(n) != null && n.elemento.compareTo(hijoMayor(n).elemento) < 0) {
-            intercambiar(n.indiceHeap,hijoMayor(n).indiceHeap);
+        if (hijoMayor(n) != null && n.getElemento().compareTo(hijoMayor(n).getElemento()) < 0) {
+            intercambiar(n.getIndiceHeap(), hijoMayor(n).getIndiceHeap());
             siftDown(n);
         }
     }
@@ -217,8 +217,8 @@ public class MaxHeap<T extends Comparable<T>> {
     private void intercambiar(int i, int j) {
         ListaEnlazada.Nodo iTemp = heap.get(i);
         ListaEnlazada.Nodo jTemp = heap.get(j);
-        iTemp.indiceHeap = j;
-        jTemp.indiceHeap = i;
+        iTemp.setIndiceHeap(j);
+        jTemp.setIndiceHeap(i);
         heap.set(i, jTemp);
         heap.set(j, iTemp);
     }
