@@ -14,6 +14,14 @@ public class Usuarios {
         }
 
         this.heapUsuarios = new MaxHeap<>(arrayUsuarios);
+
+        ListaEnlazada<Usuario> listaUsuarios = this.heapUsuarios.getLista();
+        ListaEnlazada<Usuario>.Nodo nodoActual = listaUsuarios.primerNodo();
+        while (nodoActual != null) {
+            Usuario usuarioActual = nodoActual.elemento;
+            usuarioActual.setNodoEnHeap(nodoActual);
+            nodoActual = nodoActual.siguiente;
+        }
     }
 
     public Usuario getUsuario(int id) {
@@ -24,7 +32,7 @@ public class Usuarios {
         Usuario u = getUsuario(id);
         u.setSaldo(u.getSaldo() + monto);
 
-        ListaEnlazada.Nodo n = heapUsuarios.getLista().obtenerNodo(id - 1); // O(n)
+        ListaEnlazada.Nodo n = u.getNodoEnHeap(); // O(1)
 
         //reordeno el heap
         this.heapUsuarios.subir(n); // O(log n)
@@ -34,7 +42,7 @@ public class Usuarios {
         Usuario u = getUsuario(id);
         u.setSaldo(u.getSaldo() - monto);
 
-        ListaEnlazada.Nodo n = heapUsuarios.getLista().obtenerNodo(id - 1); // O(n)
+        ListaEnlazada.Nodo n = u.getNodoEnHeap(); // O(1)
 
         this.heapUsuarios.bajar(n); // O(log n)
     }
