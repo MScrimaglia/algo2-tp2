@@ -186,31 +186,6 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
         }
         nodoActual.setElemento(elem);
     }
-
-    // Constructor por copia, no lo utilizamos.
-    // public ListaEnlazada(ListaEnlazada<T> lista) {
-    //     Nodo nuevoPrimerNodo = new Nodo();
-    //     if (lista.longitud() == 0) {
-    //         this.primero = null;
-    //         this.ultimo = null;
-    //         this.longitud = 0;
-    //         return;
-    //     }
-    //     nuevoPrimerNodo.elemento = lista.primero.elemento;
-    //     this.primero = nuevoPrimerNodo;
-    //     Nodo nodoActual = lista.primero.siguiente;
-    //     Nodo ultimoNuevoNodo = this.primero;
-    //     while (nodoActual != null) {
-    //         Nodo nuevoNodo = new Nodo();
-    //         nuevoNodo.elemento = nodoActual.elemento;
-    //         nuevoNodo.anterior = ultimoNuevoNodo;
-    //         ultimoNuevoNodo.siguiente = nuevoNodo;
-    //         nodoActual = nodoActual.siguiente;
-    //         ultimoNuevoNodo = nuevoNodo;
-    //     }
-    //     this.ultimo = ultimoNuevoNodo;
-    //     this.longitud = lista.longitud();
-    // }
     
     @Override
     public String toString() {

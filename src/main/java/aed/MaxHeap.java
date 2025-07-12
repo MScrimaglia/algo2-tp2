@@ -5,53 +5,6 @@ public class MaxHeap<T extends Comparable<T>> {
     private ArrayList<ListaEnlazada<T>.Nodo> heap;
     private ListaEnlazada<T> lista;
 
-    /* public class Handle {
-        int indiceHeap;
-        int indiceLista;
-        T valor;
-        
-        // O(1)
-        public Handle(int indiceHeap, int indiceLista, T valor) {
-            this.indiceHeap = indiceHeap;
-            this.indiceLista = indiceLista;
-            this.valor = valor;
-        }
-
-        // O(1)
-        public int indiceHeap() {
-            return indiceHeap;
-        }
-
-        // O(1)
-        public int indiceLista() {
-            return indiceLista;
-        }
-
-        // O(1)
-        public T valor() {
-            return valor;
-        }
-    } */
-
-    /* public class HeapHandle {
-        private ListaEnlazada.Nodo nodo;
-        private T valor;
-
-        public HeapHandle(ListaEnlazada.Nodo nodo, T valor) {
-            this.nodo = nodo;
-        }
-
-        // O(1)
-        public ListaEnlazada.Nodo nodo() {
-            return nodo;
-        }
-
-        // O(1)
-        public T valor() {
-            return valor;
-        }
-    } */
-
     // O(1)
     public MaxHeap() {
         this.heap = new ArrayList<>();
@@ -85,12 +38,6 @@ public class MaxHeap<T extends Comparable<T>> {
     public ListaEnlazada<T> getLista() {
         return this.lista;
     }
-
-    // O(n)
-    // No se usa
-    /* public Handle getHandleLista(int idLista) {
-        return this.lista.obtener(idLista);
-    } */
     
     // O(log n)
     public void bajar(ListaEnlazada.Nodo n) {
@@ -101,32 +48,6 @@ public class MaxHeap<T extends Comparable<T>> {
     public void subir(ListaEnlazada.Nodo n) {
         siftUp(n);
     }
-
-    // No se va a usar
-    /*  // O(log n)
-        public Handle insertar(T valor) {
-        Handle newHandle = new Handle(heap.size(), valor);
-        heap.add(newHandle);
-        siftUp(newHandle);
-        return newHandle;
-    } */
-
-    // O(log n)
-    // No se usa (ya no valido con lista enlazada)
-    /* public void modificarPorId(int id, T valor) {
-        T valorAnterior = array.get(id).valor();
-        int hIndex = array.get(id).indiceHeap();
-
-        heap.get(hIndex).valor = valor;
-
-        if (valor.compareTo(valorAnterior) > 0) {
-            siftUp(heap.get(hIndex));
-        }
-        else if (valor.compareTo(valorAnterior) < 0) {
-            siftDown(heap.get(hIndex));
-        }
-
-    } */
 
     // O(n)
     public T obtenerPorId(int id) {
